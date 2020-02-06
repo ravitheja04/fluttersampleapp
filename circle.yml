@@ -1,25 +1,23 @@
 #
 # Build configuration for Circle CI
 #
-#
-
-version: 2
+version: 1
 jobs:
   build:
-    general:
-      artifacts:
-        - /home/ravi/sampleapp/build/app/outputs/apk/
-
-    machine:
-      environment:
-        ANDROID_HOME: /usr/local/android-sdk-linux
-
-    dependencies:
-      override:
-        - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-19.1.0,android-19,extra-google-m2repository,extra-google-google_play_services,extra-android-support
-        - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
-
-    test:
-      override:
-        - (./gradlew assemble):
-            timeout: 360
+    orbs:
+      android: circleci/android@0.2.1
+    steps:
+      - checkout
+      - run: ./android && ./gradlew assembleRelease
+  test:    
+  orbs:
+      android: circleci/android@0.2.1
+    steps:
+      - checkout
+      - run: ./android test
+workflows:
+  version: 1
+  build_and_test:
+    jobs:
+      - build
+      - test
