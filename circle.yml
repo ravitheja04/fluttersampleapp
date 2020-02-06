@@ -7,22 +7,23 @@ version: 2
 jobs:
   build:
     working_directory: ~/android
-    docker:
-      - image: circleci/android:api-25-alpha
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
-      - checkout
-#      - run:
-#         name: Chmod permissions #if permission for Gradlew Dependencies fail, use this. 
-#         command: sudo chmod +x ./gradlew
-      - run:
-          name: Download Dependencies
-          command: echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-21.1.2,android-21,extra-google-m2repository,extra-google-google_play_services,extra-android-support
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-      - run:
-          name: Run Tests
-          command: ./gradlew lint test
+      general:
+        artifacts:
+          - /home/ravi/sampleapp/build/app/outputs/apk/
+
+      machine:
+        environment:
+          ANDROID_HOME: /usr/local/android-sdk-linux
+
+      dependencies:
+        override:
+          - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-19.1.0,android-19,extra-google-m2repository,extra-google-google_play_services,extra-android-support
+          - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
+
+      test:
+        override:
+          - (./gradlew assemble):
+              timeout: 360
