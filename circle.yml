@@ -4,8 +4,8 @@
 version: 2
 jobs:
   build:
-    orbs:
-      android: circleci/android@0.2.1
+    docker:
+      - image: circleci/android:api-25-alpha
     steps:
       - checkout
       - run: ./android && ./gradlew assembleRelease
