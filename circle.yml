@@ -23,6 +23,23 @@ jobs:
             sudo pip install -U crcmod
             sudo gsutil -m cp -r -U `sudo gsutil ls gs://[BUCKET_NAME]/[OBJECT_NAME] | tail -1` ${CIRCLE_ARTIFACTS}/ | true
 
+  deployment:
+    environment:
+      SR_DEV: dev
+      SR_DEV_URL: dev.seersite.com
+      SR_DEV_DB_URL: db url should be provided
+
+    steps:
+      - checkout
+      - run:
+          name: choose environment
+          command:
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                ansible-playbook site.yml
+            fi
+
+
+
 workflows:
   version: 2
   workflow-name:
