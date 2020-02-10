@@ -17,11 +17,6 @@ jobs:
           command: |
             sudo gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
             sudo gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-      - run:
-          name: Install gsutil dependency and copy test results data
-          command: |
-            sudo pip install -U crcmod
-            sudo gsutil -m cp -r -U `sudo gsutil ls gs://[BUCKET_NAME]/[OBJECT_NAME] | tail -1` ${CIRCLE_ARTIFACTS}/ | true
 
   deployment:
     environment:
