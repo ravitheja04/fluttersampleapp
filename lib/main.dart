@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+const BASE_URL = $BASE_URL_DEV;
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
