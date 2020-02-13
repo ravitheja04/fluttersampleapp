@@ -16,7 +16,7 @@ workflows:
       events:
         - push
       branch_patterns:
-        - pattern: dev*
+        - pattern: *
           include: true
           source: true
     scripts:
