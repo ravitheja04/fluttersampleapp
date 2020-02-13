@@ -4,9 +4,6 @@
 workflows:
   default-workflow:
     name: Default Workflow
-  scripts:
-    - |
-    echo $HOME
     environment:
       vars:
         BASE_URL_DEV: https://seersite-dev.herokuapp.com/api
